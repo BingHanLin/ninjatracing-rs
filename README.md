@@ -2,7 +2,7 @@
 
 # ninjatracing
 
-Rust port of the `ninjatracing` Python script. Converts Ninja build logs (`.ninja_log`) to Chrome Tracing format, enabling visualization of build performance in `chrome://tracing` or [perfetto.dev](https://ui.perfetto.dev/).
+Rust port of the `ninjatracing` Python script (originally from [https://github.com/nico/ninjatracing](https://github.com/nico/ninjatracing)). Converts Ninja build logs (`.ninja_log`) to Chrome Tracing format, enabling visualization of build performance in `chrome://tracing` or [perfetto.dev](https://ui.perfetto.dev/).
 
 ## Installation
 
@@ -21,17 +21,35 @@ Add this to your `Cargo.toml`:
 ninjatracing = { path = ".", default-features = false }
 ```
 
-## Usage
-
-### CLI
+## CLI Usage
 
 ```bash
+ninjatracing [OPTIONS] <LOG_FILES>... > trace.json
+```
+
+### Arguments
+
+| Argument | Description |
+| :--- | :--- |
+| `<LOG_FILES>...` | One or more `.ninja_log` files to parse. |
+| `-a`, `--showall` | Report on last build step for all outputs. Default is to report just on the last (possibly incremental) build. |
+| `-g`, `--granularity <US>` | Minimum length time-trace event to embed in microseconds (default: 50000). |
+| `-e`, `--embed-time-trace` | Embed `clang -ftime-trace` json file found adjacent to a target file. |
+
+### Examples
+
+```bash
+# Basic usage
 ninjatracing .ninja_log > trace.json
+
+# Show all incremental steps
 ninjatracing --showall .ninja_log > trace.json
+
+# Embed clang traces
 ninjatracing --embed-time-trace .ninja_log > trace.json
 ```
 
-### Library
+## Library Usage
 
 ```rust
 use ninjatracing::{log_to_dicts, TracingOptions};
