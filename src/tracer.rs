@@ -173,14 +173,6 @@ mod tests {
 
         assert_eq!(events.len(), 2);
 
-        // Expected order: my_output (100-200), my_first_output (50-120)
-        // Python sorts by start time implicitly or?
-        // Python: `return sorted(targets.values(), key=lambda job: job.end, reverse=True)`
-        // Wait, python sorts by END time descending.
-        // My rust implementation `parser.rs`: `result.sort_by_key(|t| t.end); result.reverse();` -> descending end time.
-        // "my_output" end=200. "my_first_output" end=120.
-        // So "my_output" first.
-
         let e1 = &events[0];
         assert_eq!(e1.name, "my_output");
         assert_eq!(e1.ts, 100000); // 100 * 1000
@@ -262,7 +254,6 @@ mod tests {
             end: 10,
             targets: vec![],
         }; // 5ms to 10ms. Ninja time = 5ms = 5000us.
-           // event LongEvent dur=1500. 1500 < 5000? Yes.
 
         let options = TracingOptions {
             show_all: false,
@@ -272,9 +263,6 @@ mod tests {
 
         let events = parse_clang_trace(reader, &target, 42, 5, &options).unwrap();
 
-        // LongEvent: dur 1500 >= 1000. Keep. ts = 1000 + 5*1000 = 6000.
-        // TooShort: dur 500 < 1000. Drop.
-        // Total Count: name starts with Total. Drop.
         // process_name: ph M. Drop.
 
         assert_eq!(events.len(), 1);

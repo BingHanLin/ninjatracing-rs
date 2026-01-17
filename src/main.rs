@@ -22,7 +22,6 @@ struct Args {
 
     /// Embed clang -ftime-trace json file found adjacent to a target file
     #[arg(short = 'e', long = "embed-time-trace")]
-    // Need explicit name mapping to match python? python uses --embed-time-trace
     embed_time_trace: bool,
 }
 

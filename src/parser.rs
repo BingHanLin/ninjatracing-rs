@@ -21,13 +21,7 @@ pub fn read_targets<R: BufRead>(reader: R, show_all: bool) -> Result<Vec<Target>
     }
 
     if version == 6 {
-        // Skip header line (not implemented in python script but mentioned as: if version == 6: next(log))
-        // Wait, python code: "if version == 6: next(log)".
-        // But the `log` iterator has already yielded the first line (the version header).
-        // So `next(log)` skips the *second* line?
-        // Let's re-read python code carefully.
-        // `header = log.readline()` -> reads first line.
-        // `if version == 6: next(log)` -> reads second line and discards.
+        // Skip header line (v6 specific behavior)
         if let Some(l) = lines.next() {
             l?; // consume
         }
@@ -45,7 +39,7 @@ pub fn read_targets<R: BufRead>(reader: R, show_all: bool) -> Result<Vec<Target>
         // Format: start\tend\trestat\tname\tcmdhash
         let parts: Vec<&str> = line.trim().split('\t').collect();
         if parts.len() < 5 {
-            continue; // Should maybe warn or error? Python just splits.
+            continue;
         }
 
         let start: u64 = parts[0].parse()?;
@@ -67,8 +61,7 @@ pub fn read_targets<R: BufRead>(reader: R, show_all: bool) -> Result<Vec<Target>
 
     let mut result: Vec<Target> = targets.into_values().collect();
     result.sort_by_key(|t| t.end);
-    result.reverse(); // Python: reverse=True (descending order?)
-                      // Python: `sorted(targets.values(), key=lambda job: job.end, reverse=True)`
+    result.reverse();
 
     Ok(result)
 }
