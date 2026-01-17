@@ -199,12 +199,7 @@ mod tests {
         };
         let events = log_to_dicts(log, None, 42, &options).unwrap();
 
-        // "my_first_output" (end 120) < "my_output" (end 200).
-        // `last_end_seen` logic in parser:
-        // 1. 100-200. last_end=200.
-        // 2. 50-120. 120 < 200. Clear targets!
-        // 3. Add 50-120.
-        // Result: only my_first_output.
+
 
         assert_eq!(events.len(), 1);
         let e = &events[0];
