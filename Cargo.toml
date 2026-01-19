@@ -2,6 +2,15 @@
 name = "ninjatracing"
 version = "0.1.0"
 edition = "2021"
+authors = ["BingHanLin <jaguar3096@example.com>"]
+description = "Rust port of ninjatracing: converts Ninja build logs to Chrome Tracing format"
+license = "Apache-2.0"
+repository = "https://github.com/BingHanLin/ninjatracing-rs"
+homepage = "https://github.com/BingHanLin/ninjatracing-rs"
+documentation = "https://docs.rs/ninjatracing"
+keywords = ["ninja", "build", "tracing", "performance", "chrome"]
+categories = ["development-tools::build-utils", "development-tools::profiling"]
+readme = "README.md"
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }

@@ -1,12 +1,20 @@
 [task list](#task-port-ninjatracing-to-rust)
 
-# ninjatracing
+# ninjatracing-rs
 
 Rust port of the `ninjatracing` Python script (originally from [https://github.com/nico/ninjatracing](https://github.com/nico/ninjatracing)). Converts Ninja build logs (`.ninja_log`) to Chrome Tracing format, enabling visualization of build performance in `chrome://tracing` or [perfetto.dev](https://ui.perfetto.dev/).
 
 ## Installation
 
 ### As a CLI Tool
+
+**From crates.io (Recommended)**
+
+```bash
+cargo install ninjatracing
+```
+
+**From source**
 
 ```bash
 cargo install --path .
@@ -18,7 +26,14 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-ninjatracing = { path = ".", default-features = false }
+ninjatracing = "0.1"
+```
+
+Or with only the library (without CLI):
+
+```toml
+[dependencies]
+ninjatracing = { version = "0.1", default-features = false }
 ```
 
 ## CLI Usage
