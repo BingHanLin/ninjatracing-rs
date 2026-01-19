@@ -248,6 +248,7 @@ mod tests {
             start: 5,
             end: 10,
             targets: vec![],
+            order: 0,
         }; // 5ms to 10ms. Ninja time = 5ms = 5000us.
 
         let options = TracingOptions {

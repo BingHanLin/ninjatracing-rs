@@ -7,14 +7,16 @@ pub struct Target {
     pub start: u64,
     pub end: u64,
     pub targets: Vec<String>,
+    pub order: usize,
 }
 
 impl Target {
-    pub fn new(start: u64, end: u64) -> Self {
+    pub fn new(start: u64, end: u64, order: usize) -> Self {
         Self {
             start,
             end,
             targets: Vec::new(),
+            order,
         }
     }
 }

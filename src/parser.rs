@@ -29,6 +29,7 @@ pub fn read_targets<R: BufRead>(reader: R, show_all: bool) -> Result<Vec<Target>
 
     let mut targets: HashMap<String, Target> = HashMap::new();
     let mut last_end_seen: u64 = 0;
+    let mut order_counter: usize = 0;
 
     for line in lines {
         let line = line?;
@@ -50,18 +51,25 @@ pub fn read_targets<R: BufRead>(reader: R, show_all: bool) -> Result<Vec<Target>
         // Incremental build check
         if !show_all && end < last_end_seen {
             targets.clear();
+            order_counter = 0;
         }
         last_end_seen = end;
 
         let target = targets
             .entry(cmdhash.to_string())
-            .or_insert_with(|| Target::new(start, end));
+            .or_insert_with(|| {
+                let t = Target::new(start, end, order_counter);
+                order_counter += 1;
+                t
+            });
         target.targets.push(name.to_string());
     }
 
     let mut result: Vec<Target> = targets.into_values().collect();
-    result.sort_by_key(|t| t.end);
-    result.reverse();
+    // Sort by end time descending, then by insertion order (to match Python dict behavior)
+    result.sort_by(|a, b| {
+        b.end.cmp(&a.end).then_with(|| a.order.cmp(&b.order))
+    });
 
     Ok(result)
 }
