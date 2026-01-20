@@ -1,5 +1,3 @@
-[task list](#task-port-ninjatracing-to-rust)
-
 # ninjatracing-rs
 
 Rust port of the `ninjatracing` Python script (originally from [https://github.com/nico/ninjatracing](https://github.com/nico/ninjatracing)). Converts Ninja build logs (`.ninja_log`) to Chrome Tracing format, enabling visualization of build performance in `chrome://tracing` or [perfetto.dev](https://ui.perfetto.dev/).
